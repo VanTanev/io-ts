@@ -1138,31 +1138,25 @@ export class IntersectionType<CS extends Array<Any>, A = any, O = A, I = unknown
   }
 }
 
+type Types<T extends Any[]> = { [k in keyof T]: T[k] extends { _A: infer D } ? D : never }
+
+type InputTypes<T extends Any[]> = { [k in keyof T]: T[k] extends { _I: infer D } ? D : never }
+
+type OutputTypes<T extends Any[]> = { [k in keyof T]: T[k] extends { _O: infer D } ? D : never }
+
+type IntersectionOf<T extends any> = ({ [k in keyof T]: (x: T[k]) => void })[number] extends (a: infer A) => any
+  ? A
+  : never
+
 /**
  * @since 1.5.3
  */
 export interface IntersectionC<CS extends [Mixed, Mixed, ...Array<Mixed>]>
   extends IntersectionType<
     CS,
-    CS extends [Mixed, Mixed]
-      ? TypeOf<CS['0']> & TypeOf<CS['1']>
-      : CS extends [Mixed, Mixed, Mixed]
-      ? TypeOf<CS['0']> & TypeOf<CS['1']> & TypeOf<CS['2']>
-      : CS extends [Mixed, Mixed, Mixed, Mixed]
-      ? TypeOf<CS['0']> & TypeOf<CS['1']> & TypeOf<CS['2']> & TypeOf<CS['3']>
-      : CS extends [Mixed, Mixed, Mixed, Mixed, Mixed]
-      ? TypeOf<CS['0']> & TypeOf<CS['1']> & TypeOf<CS['2']> & TypeOf<CS['3']> & TypeOf<CS['4']>
-      : unknown,
-    CS extends [Mixed, Mixed]
-      ? OutputOf<CS['0']> & OutputOf<CS['1']>
-      : CS extends [Mixed, Mixed, Mixed]
-      ? OutputOf<CS['0']> & OutputOf<CS['1']> & OutputOf<CS['2']>
-      : CS extends [Mixed, Mixed, Mixed, Mixed]
-      ? OutputOf<CS['0']> & OutputOf<CS['1']> & OutputOf<CS['2']> & OutputOf<CS['3']>
-      : CS extends [Mixed, Mixed, Mixed, Mixed, Mixed]
-      ? OutputOf<CS['0']> & OutputOf<CS['1']> & OutputOf<CS['2']> & OutputOf<CS['3']> & OutputOf<CS['4']>
-      : unknown,
-    unknown
+    IntersectionOf<Types<CS>>,
+    IntersectionOf<OutputTypes<CS>>,
+    IntersectionOf<InputTypes<CS>>
   > {}
 
 const mergeAll = (base: any, us: Array<any>): any => {
@@ -1188,19 +1182,19 @@ const mergeAll = (base: any, us: Array<any>): any => {
 /**
  * @since 1.0.0
  */
-export function intersection<A extends Mixed, B extends Mixed, C extends Mixed, D extends Mixed, E extends Mixed>(
-  codecs: [A, B, C, D, E],
-  name?: string
-): IntersectionC<[A, B, C, D, E]>
-export function intersection<A extends Mixed, B extends Mixed, C extends Mixed, D extends Mixed>(
-  codecs: [A, B, C, D],
-  name?: string
-): IntersectionC<[A, B, C, D]>
-export function intersection<A extends Mixed, B extends Mixed, C extends Mixed>(
-  codecs: [A, B, C],
-  name?: string
-): IntersectionC<[A, B, C]>
-export function intersection<A extends Mixed, B extends Mixed>(codecs: [A, B], name?: string): IntersectionC<[A, B]>
+// export function intersection<A extends Mixed, B extends Mixed, C extends Mixed, D extends Mixed, E extends Mixed>(
+//   codecs: [A, B, C, D, E],
+//   name?: string
+// ): IntersectionC<[A, B, C, D, E]>
+// export function intersection<A extends Mixed, B extends Mixed, C extends Mixed, D extends Mixed>(
+//   codecs: [A, B, C, D],
+//   name?: string
+// ): IntersectionC<[A, B, C, D]>
+// export function intersection<A extends Mixed, B extends Mixed, C extends Mixed>(
+//   codecs: [A, B, C],
+//   name?: string
+// ): IntersectionC<[A, B, C]>
+// export function intersection<A extends Mixed, B extends Mixed>(codecs: [A, B], name?: string): IntersectionC<[A, B]>
 export function intersection<CS extends [Mixed, Mixed, ...Array<Mixed>]>(
   codecs: CS,
   name: string = `(${codecs.map(type => type.name).join(' & ')})`

@@ -184,9 +184,6 @@ const Intersection6 = t.intersection([t.type({ a: NumberFromString }), t.type({ 
 type Intersection6TypeTest = Equals<t.TypeOf<typeof Intersection6>, { a: number; b: string }> // $ExpectType "T"
 type Intersection6OutputTest = Equals<t.OutputOf<typeof Intersection6>, { a: string; b: string }> // $ExpectType "T"
 
-// $ExpectError
-const Intersection7 = t.intersection([t.string, t.string, t.string, t.string, t.string, t.string])
-
 declare function testIntersectionInput<T>(x: t.Type<Record<keyof T, string>, any, unknown>): void
 declare function testIntersectionOuput<T>(x: t.Type<any, Record<keyof T, string>, unknown>): void
 const QueryString = t.intersection([

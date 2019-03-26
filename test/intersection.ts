@@ -52,13 +52,21 @@ describe('intersection', () => {
       const T2 = t.intersection([t.type({ b: NumberFromString }), t.type({ a: t.string })])
       assertSuccess(T2.decode({ a: 'a', b: '1' }), { a: 'a', b: 1 })
       const T3 = t.intersection([t.type({ b: NumberFromString }), t.type({ a: t.string }), t.type({ c: t.string })])
-      assertSuccess(T3.decode({ a: 'a', b: '1', c: 'c' }), { a: 'a', b: 1, c: 'c' })
+      assertSuccess(T3.decode({ a: 'a', b: '1', c: 'c' }), {
+        a: 'a',
+        b: 1,
+        c: 'c'
+      })
       const T4 = t.intersection([
         t.type({ b: NumberFromString }),
         t.type({ a: t.string }),
         t.type({ c: NumberFromString })
       ])
-      assertSuccess(T4.decode({ a: 'a', b: '1', c: '2' }), { a: 'a', b: 1, c: 2 })
+      assertSuccess(T4.decode({ a: 'a', b: '1', c: '2' }), {
+        a: 'a',
+        b: 1,
+        c: 2
+      })
       const T5 = t.intersection([t.type({ b: NumberFromString }), t.type({})])
       assertSuccess(T5.decode({ b: '1' }), { b: 1 })
     })
@@ -118,13 +126,21 @@ describe('intersection', () => {
       const T2 = t.intersection([t.type({ b: NumberFromString }), t.type({ a: t.string })])
       assert.deepStrictEqual(T2.encode({ a: 'a', b: 1 }), { a: 'a', b: '1' })
       const T3 = t.intersection([t.type({ b: NumberFromString }), t.type({ a: t.string }), t.type({ c: t.string })])
-      assert.deepStrictEqual(T3.encode({ a: 'a', b: 1, c: 'c' }), { a: 'a', b: '1', c: 'c' })
+      assert.deepStrictEqual(T3.encode({ a: 'a', b: 1, c: 'c' }), {
+        a: 'a',
+        b: '1',
+        c: 'c'
+      })
       const T4 = t.intersection([
         t.type({ b: NumberFromString }),
         t.type({ a: t.string }),
         t.type({ c: NumberFromString })
       ])
-      assert.deepStrictEqual(T4.encode({ a: 'a', b: 1, c: 2 }), { a: 'a', b: '1', c: '2' })
+      assert.deepStrictEqual(T4.encode({ a: 'a', b: 1, c: 2 }), {
+        a: 'a',
+        b: '1',
+        c: '2'
+      })
       const T5 = t.intersection([t.type({ b: NumberFromString }), t.type({})])
       assert.deepStrictEqual(T5.encode({ b: 1 }), { b: '1' })
     })
